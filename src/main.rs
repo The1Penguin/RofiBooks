@@ -6,10 +6,11 @@ use std::process::Command;
 use std::ffi::OsStr;
 extern crate glob;
 use glob::glob;
-
+use std::env;
 
 fn main() {
-    let path = "/home/thepenguin/Documents/Books";
+    let args: Vec<String> = env::args().collect();
+    let path = &args[1];
     let entries = generatelist(path);
     display(path, entries);
     }
