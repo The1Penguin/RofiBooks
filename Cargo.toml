@@ -1,0 +1,10 @@
+[package]
+name = "rofi_book"
+version = "0.1.0"
+authors = ["The1Penguin <jesper@acorneroftheweb.com>"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rofi = "0.2.2"
+glob = "0.3.0"
