@@ -1,5 +1,6 @@
 extern crate rofi;
-use std::fs;
+extern crate regex;
+use regex::Regex;
 use std::path::Path;
 use std::process::Command;
 use std::ffi::OsStr;
@@ -8,37 +9,39 @@ use glob::glob;
 
 
 fn main() {
-    let entries = generatelist("/home/thepenguin/Documents/Books");
-    display(entries);
+    let path = "/home/thepenguin/Documents/Books";
+    let entries = generatelist(path);
+    display(path, entries);
     }
 
-fn display(dir_entries:std::vec::Vec<std::string::String>){
-    match rofi::Rofi::new(&dir_entries).prompt("Schedule").run() {
-        Ok(_choice) => displayOption(&_choice),
+fn display(path: &str, dir_entries:std::vec::Vec<std::string::String>){
+    match rofi::Rofi::new(&dir_entries).prompt("Books").run() {
+        Ok(_choice) => displayOption(path, &_choice),
         Err(rofi::Error::Interrupted) => (),
         Err(e) => println!("Error, {}", e)
     }
 }
 
-fn displayOption(path: &str){
-    match get_extension_from_filename(&path) {
+fn displayOption(path: &str, file: &str){
+    match get_extension_from_filename(&file) {
         Some("pdf") => {
             Command::new("zathura")
-                .args(&[&path])
+                .args(&[&(path.to_string() + "/" + file)])
                 .spawn()
                 .expect("Failed to start");
             },
         _ => {
-            println!("{}", path.to_string());
-            display(generatelist(path));
+            let newpath = path.to_string() + "/" + file;
+            display(&newpath, generatelist(&newpath));
         },
         }
 }
 
 fn generatelist(path: &str) -> std::vec::Vec<std::string::String>{
     let mut temp: Vec<std::string::String> = Vec::new();
+    let re = Regex::new(r"^[^_]*/").unwrap();
     for file in glob(&(path.to_string() + "/*")).expect("Failed to find") {
-        temp.push(file.unwrap().display().to_string())
+        temp.push((re.replace_all(&(file.unwrap().display().to_string()), "")).to_string());
     }
     return temp;
     
