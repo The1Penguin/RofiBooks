@@ -24,14 +24,14 @@ fn display(path: &str, dir_entries:std::vec::Vec<std::string::String>){
 }
 
 fn displayOption(path: &str, file: &str){
-    match get_extension_from_filename(&file) {
-        Some("pdf") => {
-            Command::new("zathura")
+    match isDir(&(path.to_string() + "/" + file)) {
+        false => {
+            Command::new("xdg-open")
                 .args(&[&(path.to_string() + "/" + file)])
                 .spawn()
                 .expect("Failed to start");
             },
-        _ => {
+        true => {
             let newpath = path.to_string() + "/" + file;
             display(&newpath, generatelist(&newpath));
         },
@@ -48,8 +48,7 @@ fn generatelist(path: &str) -> std::vec::Vec<std::string::String>{
     
 }
 
-fn get_extension_from_filename(filename: &str) -> Option<&str> {
+fn isDir(filename: &str) -> bool {
     Path::new(filename)
-        .extension()
-        .and_then(OsStr::to_str)
+        .is_dir()
 }
