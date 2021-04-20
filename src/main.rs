@@ -3,7 +3,6 @@ extern crate regex;
 use regex::Regex;
 use std::path::Path;
 use std::process::Command;
-use std::ffi::OsStr;
 extern crate glob;
 use glob::glob;
 use std::env;
@@ -45,7 +44,6 @@ fn generatelist(path: &str) -> std::vec::Vec<std::string::String>{
         temp.push((re.replace_all(&(file.unwrap().display().to_string()), "")).to_string());
     }
     return temp;
-    
 }
 
 fn isDir(filename: &str) -> bool {
