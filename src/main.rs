@@ -6,8 +6,7 @@ use std::path::Path;
 use std::process::Command;
 extern crate glob;
 use glob::glob;
-use std::env;
-use clap::{Arg,App};
+use clap::{App};
 
 fn main() {
     let args = App::new("rofi_book")
