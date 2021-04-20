@@ -10,7 +10,6 @@ use std::env;
 use clap::{Arg,App};
 
 fn main() {
-
     let args = App::new("rofi_book")
 	.version("0.1.0")
 	.about("shows all the files in folder and opens using xdg-open")
